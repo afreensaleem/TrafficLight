@@ -4,7 +4,26 @@
   <style>
     body {
       font-family: sans-serif;
+      margin: 0;
+       overflow: hidden;
     }
+    
+.background {
+  width: 100%;
+  height: 100vh;
+  background-image: url("background_image.jpeg");
+  background-size: cover;
+  background-repeat: repeat-x;
+}
+
+@keyframes moveBackground {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
 
     #controlPanel {
       float: left;
@@ -60,14 +79,17 @@
       background:#808080;
       height:10px;
     }
-       
+       .text{
+         position:relative;
+         top:500px;
+
+       }
   
      #car {
          height:90px;
       width:120px;
       position: absolute;
-      top: 50%; 
-      transform: translateY(-50%);
+     bottom :320px;
       animation: moveCar 5s linear infinite;
         animation-play-state: running;
     }
@@ -91,8 +113,8 @@
   </style>
 </head>
 
-<body>
-<h1> new heading</h1>
+<body class="background">
+
   <div id="controlPanel">
     <h1 id="stopButton" class="button">Stop</h1>
     <h1 id="slowButton" class="button">Slow</h1>
@@ -103,12 +125,17 @@
     <div id="slowLight" class="bulb"></div>
     <div id="goLight" class="bulb"></div>
   </div>
+  <div class="text"> "Click the traffic controller button to control the car"</div>
 
 <div id="car"><img src="transparent.png"/></div>
+<audio id="stopSound" src="stop.mp3" preload="auto"></audio>
+<audio id="goSound" src="go.mp3" preload="auto"></audio>
 
 
 <script>
    const car = document.getElementById('car');
+   const stopSound = document.getElementById("stopSound");
+   const goSound = document.getElementById("goSound");
   document.getElementById('stopButton').onclick = illuminateRed;
   document.getElementById('slowButton').onclick = illuminateYellow;
   document.getElementById('goButton').onclick = illuminateGreen;
@@ -117,6 +144,9 @@
     clearLights();
     document.getElementById('stopLight').style.backgroundColor = "red";
       car.style.animationPlayState = 'paused'; 
+      stopAllSounds();
+      stopSound.currentTime = 0;
+      stopSound.play();
   }
 
   function illuminateYellow() {
@@ -131,6 +161,9 @@
    document.getElementById('goLight').style.backgroundColor = "green";
     car.style.animationDuration = '5s';     // normal speed
      car.style.animationPlayState = 'running'; 
+     stopAllSounds();
+     goSound.currentTime = 0;
+  goSound.play();
   }
 
   function clearLights() {
@@ -138,6 +171,13 @@
     document.getElementById('slowLight').style.backgroundColor = "black";
     document.getElementById('goLight').style.backgroundColor = "black";
   }
+
+  function stopAllSounds() {
+  stopSound.pause();
+  goSound.pause();
+}
+
+
 </script>
 
 
